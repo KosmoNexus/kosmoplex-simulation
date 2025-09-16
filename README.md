@@ -15,7 +15,8 @@ Supplement_C.tex: LaTeX document describing the simulation.
 plots/: Directory for output visualizations (e.g., simulation_plot.png).
 
 Citation
-Macedonia, C. (2025). Supplement C: A Simulation of Kosmoplex-Derived Alpha as the Information Channel Bandwidth for Particle Formation Compared to LHC Data. MDPI Mathematics, submitted.
+Macedonia, C. (2025). Supplementary Materials: Mathematical Foundations and Simulation of the Fine-Structure
+Constant Derivation, Foundations of Physics, submitted.
 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
