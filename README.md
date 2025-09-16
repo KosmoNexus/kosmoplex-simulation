@@ -14,7 +14,7 @@ kosmoplex_simulation.py: Main simulation code.
 Supplement_C.tex: LaTeX document describing the simulation.
 plots/: Directory for output visualizations (e.g., simulation_plot.png).
 
-Citation
+Citation:
 Macedonia, C. (2025). Supplementary Materials: Mathematical Foundations and Simulation of the Fine-Structure
 Constant Derivation, Springer, Foundations of Physics, submitted.
 License
