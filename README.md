@@ -16,7 +16,7 @@ plots/: Directory for output visualizations (e.g., simulation_plot.png).
 
 Citation
 Macedonia, C. (2025). Supplementary Materials: Mathematical Foundations and Simulation of the Fine-Structure
-Constant Derivation, Foundations of Physics, submitted.
+Constant Derivation, Springer, Foundations of Physics, submitted.
 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
