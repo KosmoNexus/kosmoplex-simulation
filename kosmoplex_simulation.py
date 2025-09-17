@@ -4,7 +4,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from sklearn.decomposition import PCA
 from mpmath import mp, ln, zeta, euler, phi, pi, sqrt
 
-# Dynamic alpha computation from paper's Eq. 22
+# Dynamic alpha from paper's Eq. 22
 mp.dps = 20
 def compute_alpha_inverse(n=mp.mpf('8.07e60')):
     mp_gamma = euler(); mp_zeta3 = zeta(3); base = mp.mpf(137)
@@ -17,12 +17,12 @@ print(f"Derived alpha^{-1}: {1/alpha:.9f}")
 # Glyph-based initials (subset of 42 glyphs)
 glyphs = [1, 2, 3, 4, 7, 8, float(1/phi), float(phi), float(1/e), float(e), float(1/pi), float(pi),
           float(1/sqrt(2)), float(sqrt(2)), float(1/sqrt(3)), float(sqrt(3)), float(1/sqrt(5)), float(sqrt(5)),
-          float(1/ln(2)), float(ln(2)), 21, 42, 23, 46, 147, 137]  # Partial list
+          float(1/ln(2)), float(ln(2)), 21, 42, 23, 46, 147, 137]
 heptagram_indices = [0, 3, 6, 9, 12, 15, 18, 21 % len(glyphs)]
 proton_coeffs = np.array([glyphs[i] for i in heptagram_indices])
 boson_coeffs = np.array([glyphs[(i+1) % len(glyphs)] for i in heptagram_indices])
 
-# Octonion class for 8D states
+# Octonion class
 class Octonion:
     def __init__(self, coeffs): self.coeffs = np.array(coeffs, dtype=float)
     def __str__(self): return f"Octonion({self.coeffs})"
@@ -39,29 +39,29 @@ class Octonion:
                 result[k] += sign * self.coeffs[i] * other.coeffs[j]
         return Octonion(result)
 
-# Ternary discretization function
+# Ternary discretization
 def ternary_discretize(vector, threshold=0.1):
     return np.where(np.abs(vector) < threshold, 0, np.sign(vector))
 
-# Yang-Baxter weave approximation
+# Yang-Baxter weave
 def yang_baxter_weave(line_values):
-    return np.roll(line_values, 1)  # Simple braiding
+    return np.roll(line_values, 1)
 
-# Fano plane interactions with weave
+# Fano interaction with weave
 def apply_fano_glyph_interaction(state, active_lines):
     fano_lines = [[0, 1, 3], [1, 2, 4], [2, 3, 5], [3, 4, 6], [4, 5, 0], [5, 6, 1], [6, 0, 2]]
     new_coeffs = state.coeffs.copy()
     for line in [fano_lines[i] for i in active_lines]:
-        values = [state.coeffs[i] for i in line]
-        values = yang_baxter_weave(values)  # Add weave
+        values = [state.coeffs[idx] for idx in line]
+        values = yang_baxter_weave(values)
         avg = np.mean(values)
-        for i in line: new_coeffs[i] = avg
+        for idx in line: new_coeffs[idx] = avg
     return Octonion(ternary_discretize(new_coeffs))
 
-# Simulation parameters
-strong_factor = 16  # Approx alpha_s/alpha
+# Parameters
+strong_factor = 16
 noise_level = 0.1
-max_iterations = 10000  # Reduced for test
+max_iterations = 1000000  # 1M for efficiency
 convergence_threshold = 0.01
 convergence_steps = 10
 np.random.seed(42)
@@ -73,17 +73,17 @@ proton_lines = list(range(7))
 boson_lines = [0, 1, 2]
 shared_lines = [0, 1, 2, 3]
 
-# Projection and feedback matrices
+# Projection and feedback
 proj_matrix = alpha * np.random.randn(4, 8)
 feedback_matrix = alpha * np.random.randn(8, 4)
 
-# Track trajectories
+# Track
 proton_traj = [proton_init.coeffs]
 boson_traj = [boson_init.coeffs]
 four_d_traj_proton = []
 four_d_traj_boson = []
 
-# Main simulation loop
+# Loop
 proton = proton_init
 boson = boson_init
 recent_flips = []
@@ -123,16 +123,10 @@ for i in range(max_iterations):
             print(f"Converged at iteration {i+1}")
             break
 
-# Extrapolate if not converged
-if len(recent_flips) > 0 and recent_flips[-1] > convergence_threshold:
-    remaining = (recent_flips[-1] / convergence_threshold) * i
-    total_iterations = int(i + remaining)
-else:
-    total_iterations = i + 1
-
 # Results with LHC comparison
+total_iterations = i + 1 if len(recent_flips) == 0 else int(i + (recent_flips[-1] / convergence_threshold) * i)
 planck_time = 5.391e-44
-convergence_time = total_iterations * planck_time * 1e17  # Scale to LHC range (~10^-25 s)
+convergence_time = total_iterations * planck_time * 1e17  # Scale to LHC range
 lhc_w_tau = 3e-25
 print(f"Initial Proton: {proton_init}")
 print(f"Final Proton: {proton}")
