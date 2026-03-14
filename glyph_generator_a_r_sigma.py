@@ -73,14 +73,14 @@ class GlyphCalculator:
             (6, 1, '-'): {'k': 37, 'symbol': '21', 'sympy_expr': sp.sympify(21), 'role': '3 × 7 (half of 42)'},
             (6, 1, '+'): {'k': 38, 'symbol': '42', 'sympy_expr': sp.sympify(42), 'role': 'Fano 6 × 7'},
             (6, 2, '-'): {'k': 39, 'symbol': '23', 'sympy_expr': sp.sympify(23), 'role': 'Frobenius prime'},
-            (6, 2, '+'): {'k': 40, 'symbol': '46', 'sympy_expr': sp.sympify(46), 'role': '1st Comp resonance'},
+            (6, 2, '+'): {'k': 40, 'symbol': '46', 'sympy_expr': sp.sympify(46), 'role': '1st Compton resonance'},
             (6, 4, '-'): {'k': 41, 'symbol': '147', 'sympy_expr': sp.sympify(147), 'role': 'Geometric boundary'},
             (6, 4, '+'): {'k': 42, 'symbol': '137', 'sympy_expr': sp.sympify(137), 'role': 'Fine structure 1/α'},
         }
     
     def get_fano_line(self, a: int) -> List[int]:
-        """Get the Fano line L(a) = {a, a+1, a+3} mod 7."""
-        return [(a + i) % 7 for i in [0, 1, 3]]
+        """Get the Fano line L(a) = {a+1, a+2, a+4} mod 7 (matches PFED8_Engine)."""
+        return [(a + i) % 7 for i in [1, 2, 4]]
     
     def compute_wallis_partial(self, n_terms: int) -> Tuple[List[str], sp.Rational]:
         """Compute partial Wallis product for π approximation."""
@@ -143,12 +143,12 @@ class GlyphCalculator:
                     print("Invalid a. Must be 0-6.")
                     continue
                 
-                r = int(input("Enter r {1,2,4}: "))
+                r = int(input("Enter r (1, 2, or 4): "))
                 if r not in [1, 2, 4]:
                     print("Invalid r. Must be 1, 2, or 4.")
                     continue
                 
-                sigma = input("Enter sigma {+, -}: ").strip()
+                sigma = input("Enter sigma (+ or -): ").strip()
                 if sigma not in ['+', '-']:
                     print("Invalid sigma. Must be + or -.")
                     continue
